@@ -1,0 +1,23 @@
+version: '3'
+services:
+  postgres_jwt:
+    container_name: postgres_jwt
+    image: postgres
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: user
+      POSTGRES_DB: jwt
+    ports:
+      - "5432:5432"
+  jwt:
+    build: ./
+    container_name: jwt
+    image: jwt
+    depends_on:
+      - postgres_jwt
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres_jwt:5432/jwt
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: user
+    ports:
+      - "8080:8080"
